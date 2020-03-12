@@ -1,6 +1,6 @@
 function expressionCalculator(expr) {
-    let expression = expr.split('');
-    expression = expression.filter(element => element !== ' ');
+    expr = expr.replace(/\s/g, '').replace(/(\*|\/|\+|\-)/g, ' $& ');
+    let expression = expr.split(' ');
 
     for (i = 0; i < expression.length; i++) {
         if (expression[i] === '*') {
@@ -36,7 +36,7 @@ function expressionCalculator(expr) {
         }
     };
 
-    return expression;
+    return +expression;
 }
 
 module.exports = {
