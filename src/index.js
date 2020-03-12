@@ -1,33 +1,42 @@
 function expressionCalculator(expr) {
-    let expression = expr.split(' ');
-    let sign = [];
-    let result = 0;
+    let expression = expr.split('');
+    expression = expression.filter(element => element !== ' ');
 
-    expression.forEach(element => {
-        if (isNaN(element)) {
-            sign = element;
-            const index = expression.indexOf(element);
-            expression.splice(index, 1);
+    for (i = 0; i < expression.length; i++) {
+        if (expression[i] === '*') {
+            expression[i] = +expression[i - 1] * +expression[i + 1];
+            expression.splice(i - 1, 1);
+            expression.splice(i, 1);
+            i--;
         }
-    });
-    console.log(expression);
-    console.log(sign);
 
-    if (sign === '*') {
-        result = +expression[0] * +expression[1];
-    }
-    if (sign === '/') {
-        if (expression[1] === '0') throw Error('TypeError: Division by zero.');
-        result = +expression[0] / +expression[1];
-    }
-    if (sign === '+') {
-        result = +expression[0] + +expression[1];
-    }
-    if (sign === '-') {
-        result = +expression[0] - +expression[1];
-    }
+        if (expression[i] === '/') {
+            if (expression[i + 1] === '0') throw Error('TypeError: Division by zero.');
+            expression[i] = +expression[i - 1] / +expression[i + 1];
+            expression.splice(i - 1, 1);
+            expression.splice(i, 1);
+            i--;
+        }
+    };
 
-    return result;
+    for (i = 0; i < expression.length; i++) {
+        if (expression[i] === '+') {
+            expression[i] = +expression[i - 1] + +expression[i + 1];
+            expression.splice(i - 1, 1);
+            expression.splice(i, 1);
+            console.log(expression);
+            i--;
+        }
+
+        if (expression[i] === '-') {
+            expression[i] = +expression[i - 1] - +expression[i + 1];
+            expression.splice(i - 1, 1);
+            expression.splice(i, 1);
+            i--;
+        }
+    };
+
+    return expression;
 }
 
 module.exports = {
